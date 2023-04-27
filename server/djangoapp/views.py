@@ -25,7 +25,6 @@ def about(request):
 def contact(request):
     return render(request, 'djangoapp/contact.html')
 
-
 # Create a `login_request` view to handle sign in request
 def login_request(request):
     context = {}
@@ -62,14 +61,15 @@ def registration_request(request):
             User.objects.get(username=username)
             user_exist = True
         except:
-            logger.error("New user")
+            logger.debug("{} is a new user".format(username))
+
         if not user_exist:
             user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, password=password)
             login(request, user)
             return redirect("djangoapp:index")
         else:
-            context['message'] = "User already exists."
-            return render(request, 'djangoapp/registration.html', context)
+                context['message'] = "User already exists."
+                return render(request, 'djangoapp/registration.html', context)
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
